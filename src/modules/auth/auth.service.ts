@@ -9,24 +9,23 @@ export const LoginService = async (email: string, password: string) => {
   ]);
 
   if (result.rows.length === 0) {
-    return null;
+    throw new Error("User not found");
   }
 
   const user = result.rows[0];
   const match = await bcrypt.compare(password, user.password);
 
   if (!match) {
-    return false;
+    throw new Error("Invalid credentials");
   }
 
-  //* token  generate
   const token = jwt.sign(
-    { name: user.name, email: user.email, role: user.role },
+    { id: user.id, name: user.name, email: user.email, role: user.role },
     config.secret as string,
-    {
-      expiresIn: "7d",
-    }
+    { expiresIn: "7d" }
   );
+
+  delete user.password;
 
   return { token, user };
 };
