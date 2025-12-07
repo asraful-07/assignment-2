@@ -12,7 +12,7 @@ app.use(express.json());
 initDB();
 
 //* routes
-app.use("/api", usersRoutes);
-app.use("/api", authRotes);
-app.use("/api", vehiclesRoutes);
-app.use("/api", bookingRoutes);
+app.use("/api/v1", usersRoutes);
+app.use("/api/v1", authRotes);
+app.use("/api/v1", vehiclesRoutes);
+app.use("/api/v1", bookingRoutes);
