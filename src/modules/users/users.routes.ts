@@ -1,18 +1,17 @@
 import express from "express";
 import {
-  CreateUserController,
   DeleteUserController,
   GetsUserController,
   GetUserController,
   UpdateUserController,
 } from "./users.controller";
+import auth from "../../middleware/auth";
 
 const router = express.Router();
-// router.put("/users/:id", auth(), adminOrOwner(), UpdateUserController);
-router.post("/v1/auth/signup", CreateUserController);
-router.get("/v1/users", GetsUserController);
-router.get("/v1/users/:userId", GetUserController);
-router.put("/v1/users/:userId", UpdateUserController);
-router.delete("/v1/users/:userId", DeleteUserController);
+
+router.get("/users", auth("admin"), GetsUserController);
+router.get("/users/:userId", auth("admin", "customer"), GetUserController);
+router.put("/users/:userId", auth("admin", "customer"), UpdateUserController);
+router.delete("/users/:userId", auth("admin"), DeleteUserController);
 
 export default router;
